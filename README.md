@@ -1,0 +1,1 @@
+Going through Nature of Code exercises in p5.js. Messing around, adding personal modifications.
