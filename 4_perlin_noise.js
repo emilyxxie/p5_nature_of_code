@@ -1,22 +1,28 @@
 var noiseFactor = 0;
+var totalFrames = 0;
 
 function setup() {
-  createCanvas(screen.availWidth / 2, screen.availHeight /2 );
+  createCanvas(screen.availWidth, screen.availHeight);
   mappedXWidth = width;
   background(255);
+  stroke(0, 20);
+  noFill();
 }
 
 function draw() {
-  stroke(0);
-  noFill();
-  var x1 = width * noise(noiseFactor + 10);
-  var y1 = height * noise(noiseFactor + 20);
-  var x2 = width * noise(noiseFactor + 40);
-  var y2 = height * noise(noiseFactor + 60);
-  var x3 = width * noise(noiseFactor + 70);
-  var y3 = height * noise(noiseFactor + 80);
-  var x4 = width * noise(noiseFactor + 90);
-  var y4 = height * noise(noiseFactor + 100);
+  totalFrames++;
+  if (totalFrames > 5000) {
+    background(255);
+    totalFrames = 0;
+  }
+  var x1 = width * noise(noiseFactor + width / 4);
+  var y1 = height * noise(noiseFactor + height / 4);
+  var x2 = width * noise(noiseFactor + width / 3);
+  var y2 = height * noise(noiseFactor + height / 3);
+  var x3 = width * noise(noiseFactor + width / 2);
+  var y3 = height * noise(noiseFactor + height / 2);
+  var x4 = width * noise(noiseFactor + width / 0.2);
+  var y4 = height * noise(noiseFactor + height / 0.2);
   bezier(x1, y1, x2, y2, x3, y3, x4, y4);
-  noiseFactor += 0.0025;
+  noiseFactor += 0.003;
 }
