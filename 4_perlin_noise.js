@@ -3,7 +3,6 @@ var totalFrames = 0;
 
 function setup() {
   createCanvas(screen.availWidth, screen.availHeight);
-  mappedXWidth = width;
   background(255);
   stroke(0, 20);
   noFill();
