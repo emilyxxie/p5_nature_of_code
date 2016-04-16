@@ -28,9 +28,8 @@ function Ball() {
     if (this.location.y >=height) {
       yCounter++;
     }
-    console.log(yCounter);
     if (yCounter > 20) {
-      this.velocity.x = this.velocity.x / 1.005;
+      this.velocity.x = this.velocity.x / 1.008;
     }
     this.bounce();
   }
