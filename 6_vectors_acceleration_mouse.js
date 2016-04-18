@@ -1,6 +1,5 @@
 var circle;
 var mouseVector;
-// acceleration towards mouse
 
 function setup() {
   createCanvas(screen.availWidth, screen.availHeight);
@@ -35,7 +34,6 @@ function Circle() {
     this.velocity.limit(5);
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
-
 
   }
 
