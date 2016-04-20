@@ -16,12 +16,10 @@ function draw() {
     attraction = attractor.calculateAttractionForce(orb);
 
     orb.applyForce(attraction);
-    friction = orb.velocity.copy();
-    friction = friction.mult(-0.03);
-    orb.applyForce(friction);
-    // orb.checkEdges();
+
     orb.move();
-    attractor.move();
+
+    attractor.display();
     orb.display();
   });
 
@@ -30,13 +28,9 @@ function draw() {
 // NOTE: issue with mouse starting in wrong place.need to subtract somewhere
 
 function Orb() {
-
-  // var randomRelativeX = random(attractor.position.x - 10, attractor.position.x + 10);
-  // var randomRelativeY = random(attractor.position.y - 10, attractor.position.y + 10);
-
-  this.position = createVector(width / 2, height / 2);
+  this.position = createVector(random(0, width / 2), random(0, height / 2));
   this.vectorAcceleration = createVector(0, 0);
-  this.size = random(10, 80);
+  this.size = random(1);
   this.acceleration = createVector();
   this.velocity = createVector();
   this.g = random(0, 255);
@@ -44,7 +38,7 @@ function Orb() {
   this.display = function() {
     fill(150, 150, this.g, 20);
     stroke(0);
-    ellipse(this.position.x, this.position.y, this.size, this.size);
+    ellipse(this.position.x, this.position.y, this.size * 20, this.size * 20);
   }
 
   this.applyForce = function(force) {
@@ -65,9 +59,9 @@ function Orb() {
 
 function Attractor() {
 
-  this.position = createVector(mouseX, mouseY);
-  this.size = 50;
-  this.g = 1; // the gravitational constant
+  this.position = createVector(width / 2, height / 2);
+  this.size = 20;
+  this.g = 2; // the gravitational constant
 
   this.calculateAttractionForce = function(orb) {
     var force = p5.Vector.sub(this.position, orb.position);
@@ -84,6 +78,12 @@ function Attractor() {
 
   this.move = function() {
     this.position = createVector(mouseX, mouseY);
+  }
+
+  this.display = function() {
+    fill(150, 150, 60, 20);
+    stroke(0);
+    ellipse(this.position.x, this.position.y, this.size, this.size);
   }
 
 
