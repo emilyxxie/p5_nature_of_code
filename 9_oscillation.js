@@ -1,27 +1,26 @@
-var a = 0;
-var angularVelocity = 0;
-var angularAcceleration = 0.01;
+var radius = 150;
+var angle;
+var aVelocity = 0;
+var aAcceleration = 0.001;
 
 function setup() {
+  angle = PI / 4;
   createCanvas(window.innerWidth, window.innerHeight);
 }
 
 function draw() {
-  background(255);
-  a += angularAcceleration;
-  angularVelocity += angularAcceleration;
+  var x = radius * cos(angle);
+  var y = radius * sin(angle);
+  background(0);
 
-  // changes the way rectangles are drawn
-  // in other words, changes the way parameters to this are interpreted
-  // first two parameters are the shape's center point
-  // third and routh parameters are height and with
-  rectMode(CENTER);
-  // rect();
-  // translate(width / 2, height /2 );
-  translate(400, 600);
-  fill(0);
-  // rotate(PI / 4);
-  rect(0, 0, 20, 80);
+  translate(width / 2, height / 2);
+  stroke(255);
+  line(0,0,x,y);
+  ellipse(x, y, 50, 50);
 
+  angle += aVelocity;
+  aVelocity += aAcceleration;
+
+  aVelocity = constrain(aVelocity, 0, 0.1);
 
 }
