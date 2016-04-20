@@ -1,74 +1,80 @@
-// sketches: create a cluster of gravitationally attracted orbs
-// in varying colors
-// that follows around your mouse
-var orb;
+var orbs = [];
 var attractor;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-  orb = new Orb();
   attractor = new Attractor();
+  for (var i = 0; i <= 10; i++) {
+    orb = new Orb();
+    orbs.push(orb);
+  }
 }
 
 function draw() {
   background(255);
+  orbs.forEach(function(orb) {
+    attraction = attractor.calculateAttractionForce(orb);
 
+    orb.applyForce(attraction);
+    friction = orb.velocity.copy();
+    friction = friction.mult(-0.03);
+    orb.applyForce(friction);
+    // orb.checkEdges();
+    orb.move();
+    attractor.move();
+    orb.display();
+  });
 
-  orb.display();
-  attractor.display();
-
-  var attraction = attractor.attract(orb);
-  orb.applyForce(attraction);
-
-  orb.move();
-  attractor.move();
 }
 
+// NOTE: issue with mouse starting in wrong place.need to subtract somewhere
+
 function Orb() {
-  this.size = random(20, 100);
-  this.color = random(0, 255);
-  this.location = createVector(200, 300);
+
+  // var randomRelativeX = random(attractor.position.x - 10, attractor.position.x + 10);
+  // var randomRelativeY = random(attractor.position.y - 10, attractor.position.y + 10);
+
+  this.position = createVector(width / 2, height / 2);
+  this.vectorAcceleration = createVector(0, 0);
+  this.size = random(10, 80);
   this.acceleration = createVector();
-  this.velocity = createVector(2, 0);
-  this.topSpeed = 10;
+  this.velocity = createVector();
+  this.g = random(0, 255);
 
   this.display = function() {
-    strokeWeight(3);
-    fill(150, 150, this.color, 70);
-    ellipse(this.location.x, this.location.y, this.size, this.size);
+    fill(150, 150, this.g, 20);
+    stroke(0);
+    ellipse(this.position.x, this.position.y, this.size, this.size);
   }
 
   this.applyForce = function(force) {
+    // acceleration = force / size
+    // this accounts for changes in force depending on object size
     var force = p5.Vector.div(force, this.size);
     this.acceleration.add(force);
   }
 
+  // moves towards orb towards mouse attractor
   this.move = function() {
-    this.acceleration = attractor.location.sub(this.location);
-    this.velocity.limit(this.topSpeed);
     this.velocity.add(this.acceleration);
-    this.location.add(this.velocity);
+    this.position.add(this.velocity);
     this.acceleration.mult(0);
   }
 
 }
 
 function Attractor() {
-  this.location = createVector();
-  this.size = 100;
-  // further math -- maybe we can calculate actual representative mass
-  // by using sizd and a fixed density
-  // mass = volume * density
-  // if we assume a density of 1, then we can just use volume as mass
+
+  this.position = createVector(mouseX, mouseY);
+  this.size = 50;
   this.g = 1; // the gravitational constant
 
-  this.attract = function(orb) {
-    // create the force of attraction
-    var force = p5.Vector.sub(this.location, orb.location);
+  this.calculateAttractionForce = function(orb) {
+    var force = p5.Vector.sub(this.position, orb.position);
     var distance = force.mag();
-    distance = constrain(distance, 5, 200);
     // create direction of force. This will either be 1 or -1
     force.normalize();
+    distance = constrain(distance, 5, 25); // constrain distance of force
     // now, get the strength of force
     var strength = (this.g * this.size * orb.size) / (distance * distance);
     // multiply strength and direction of the force to get gravitational attraction
@@ -76,22 +82,9 @@ function Attractor() {
     return force;
   }
 
-  this.display = function() {
-    strokeWeight(3);
-    fill(150, 150, this.color, 70);
-    // ellipse(this.location.x, this.location.y, this.size, this.size);
-  }
-
   this.move = function() {
-    this.location = createVector(mouseX, mouseY);
+    this.position = createVector(mouseX, mouseY);
   }
 
-}
 
-function windowResized() {
-  // maybe use a global variable to store the size of the canvas beforehand
-  // and the size of the canvas afterward, and then use that to re-calculate
-  // the position of items that use the height and width vars
-  // actually, I don't need the above
-  resizeCanvas(window.innerWidth, window.innerHeight);
 }
