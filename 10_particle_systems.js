@@ -1,36 +1,26 @@
-// array lists in order to manage systems
-// in order to model a particle system, we need to create a class to create a particle.
-var particles = [];
+var particleSystem;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-  for (var i = 0; i <= 10; i++) {
-    particle = new Particle();
-    particles.push(particle);
-  }
+  particleSystem = new ParticleSystem();
+  particleSystem.createSystem();
 }
 
 function draw() {
   background(255);
-  particles.push(new Particle());
-
-  particles.forEach(function(particle, index) {
-    particle.move();
-    particle.fade();
-    particle.display();
-    if (particle.isDead()) {
-      particles.splice(index, 1);
-    }
-  });
+  particleSystem.display();
 }
 
-function Particle() {
+function Particle(x, y) {
   // slightly randomize the start positions
-  var halfWidth = width / 2;
+  var x = x ? x : width / 2;
+  var y = y ? y : 0;
+
   this.position = createVector(
-    random(halfWidth - 20, halfWidth + 20),
-    random(20, 100)
+    random(x - 20, x + 20),
+    random(y + 20, y + 100)
   );
+
   this.velocity = createVector(
     random(-1, 1),
     // to begin with, velocity goes slightly upward
@@ -76,4 +66,35 @@ function Particle() {
   this.isDead = function() {
     return this.lifespan >= 255;
   }
+}
+
+function ParticleSystem() {
+  this.particleSystem = [];
+
+  this.createSystem = function(x, y) {
+    var particles = [];
+    for (var i = 0; i <= 10; i++) {
+      particle = new Particle(x, y);
+      particles.push(particle);
+    }
+    this.particleSystem.push(particles)
+  }
+
+  this.display = function() {
+    this.particleSystem.forEach(function(particles) {
+      particles.push(new Particle());
+      particles.forEach(function(particle, index) {
+        particle.move();
+        particle.fade();
+        particle.display();
+        if (particle.isDead()) {
+          particles.splice(index, 1);
+        }
+      });
+    });
+  }
+}
+
+function mousePressed() {
+  particleSystem.createSystem(mouseX, mouseY);
 }
