@@ -13,12 +13,12 @@ function draw() {
 
 function Particle(x, y) {
   // slightly randomize the start positions
-  var x = x ? x : width / 2;
-  var y = y ? y : 0;
+  this.x = x ? x : width / 2;
+  this.y = y ? y : 0;
 
   this.position = createVector(
-    random(x - 20, x + 20),
-    random(y + 20, y + 100)
+    random(this.x - 20, this.x + 20),
+    random(this.y + 20, this.y + 100)
   );
 
   this.velocity = createVector(
@@ -68,7 +68,7 @@ function Particle(x, y) {
   }
 }
 
-function ParticleSystem() {
+function ParticleSystem(x, y) {
   this.particleSystem = [];
 
   this.createSystem = function(x, y) {
@@ -77,12 +77,15 @@ function ParticleSystem() {
       particle = new Particle(x, y);
       particles.push(particle);
     }
-    this.particleSystem.push(particles)
+    this.particleSystem.push(particles);
   }
 
   this.display = function() {
     this.particleSystem.forEach(function(particles) {
-      particles.push(new Particle());
+      // pull out first item in array to copy over x + y values
+      var x = particles[0].x;
+      var y = particles[0].y;
+      particles.push(new Particle(x, y));
       particles.forEach(function(particle, index) {
         particle.move();
         particle.fade();
