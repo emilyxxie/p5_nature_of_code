@@ -3,6 +3,5 @@ Going through Nature of Code exercises in p5.js. Includes some additional experi
 Below are visuals of the results of these exercises.
 
 ![alt tag](gifs/1_random_walker.gif)
-![alt tag](gifs/2_guassian_spike.gif)
 ![alt tag](gifs/4_perlin_bezier.gif)
 ![alt tag](gifs/10_particle_systems.gif)

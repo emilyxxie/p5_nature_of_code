@@ -4,12 +4,16 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   particleSystem = new ParticleSystem();
   particleSystem.createSystem();
-  noLoop();
 }
 
 function draw() {
   background(255);
+  if (mouseIsPressed) {
+    var wind = createVector(0.05, 0);
+    particleSystem.applyForce(wind);
+  }
   particleSystem.display();
+
 }
 
 function Particle(x, y) {
@@ -97,20 +101,16 @@ function ParticleSystem(x, y) {
       });
     });
   }
-}
 
-function SquareParticle(x, y) {
-  this.display = function() {
-    stroke(this.lifespan);
-    strokeWeight(2);
-    fill(this.r, this.g, this.b, 95);
-    rect(
-      this.position.x,
-      this.position.y,
-      this.size,
-      this.size
-    );
+  this.applyForce = function(force) {
+    this.particleSystem.forEach(function(particles) {
+      particles.forEach(function(particle) {
+        var forceCal = p5.Vector.div(force, particle.size);
+        particle.acceleration.add(forceCal);
+      });
+    });
   }
+
 }
 
 function mousePressed() {
