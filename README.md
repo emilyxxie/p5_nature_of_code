@@ -5,3 +5,4 @@ Below are visuals of the results of these exercises.
 ![alt tag](gifs/1_random_walker.gif)
 ![alt tag](gifs/4_perlin_bezier.gif)
 ![alt tag](gifs/10_particle_systems.gif)
+![alt tag](gifs/11_math_functions.gif)

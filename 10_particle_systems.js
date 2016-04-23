@@ -99,20 +99,6 @@ function ParticleSystem(x, y) {
   }
 }
 
-function SquareParticle(x, y) {
-  this.display = function() {
-    stroke(this.lifespan);
-    strokeWeight(2);
-    fill(this.r, this.g, this.b, 95);
-    rect(
-      this.position.x,
-      this.position.y,
-      this.size,
-      this.size
-    );
-  }
-}
-
 function mousePressed() {
   particleSystem.createSystem(mouseX, mouseY);
 }
