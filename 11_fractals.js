@@ -2,7 +2,7 @@ var currentKochLines = [];
 var previousKochLines = [];
 var colors = [];
 var totalColors = 360;
-var colorIncrement = 6;
+var colorIncrement = 20;
 
 function setup() {
   background(0);
