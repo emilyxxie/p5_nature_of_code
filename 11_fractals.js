@@ -8,20 +8,44 @@ var mouseClickedCounter = 0;
 function setup() {
   background(0);
   createCanvas(window.innerWidth, window.innerHeight);
-  var kochGroup = createInitialKochTriangle();
-  currentKochLines.push(kochGroup);
-  // set up array of colors
+  // set up array of colors to cache
   colors = Array.apply(null, Array(totalColors)).map(function(_, num) {
     return color('hsl(' + num + ',80%, 60%)');
   });
+
+  ///////////// now set up grid of triangles
+
+  // here are the x-axis variables
+  var triangleCountX = 6;
+  // set the size of the triangle
+  var triangleWidth = width / triangleCountX;
+
+  // here are the y-axis variables
+  // use Pythagorean theorum to get height of triangle
+  var halfTW = triangleWidth / 2;
+  var triangleHeight = (triangleWidth * triangleWidth) - (halfTW * halfTW);
+  triangleHeight = sqrt(triangleHeight);
+  var triangleCountY = height / triangleHeight;
+
+  //
+  var hPadding = sin(radians(60)) * (triangleWidth / 3);
+  for (var i = 0; i <= triangleCountX; i++) {
+    for (var j = 0; j <= triangleCountY; j++) {
+      var kochGroup = createKochTriangle(
+        (i * triangleWidth),
+        (j * (triangleHeight + hPadding)),
+        triangleWidth
+      );
+      currentKochLines.push(kochGroup);
+    }
+  }
+
 }
 
-function createInitialKochTriangle() {
+function createKochTriangle(x, y, triangleWidth) {
   var color = colorIncrement;
-  yMargin = height / 3;
-  xMargin = width / 3;
-  var start = createVector(xMargin, 0 + yMargin);
-  var end = createVector(width - xMargin, 0 + yMargin);
+  var start = createVector(x, y);
+  var end = createVector(x + triangleWidth, y);
   var koch1 = new KochLine(start, end, color);
 
   // koch 2
@@ -136,7 +160,7 @@ function KochLine(start, end, color) {
 
 function mouseClicked() {
   mouseClickedCounter++;
-  if (mouseClickedCounter >= 6) {
+  if (mouseClickedCounter >= 5) {
     return;
   }
   previousKochLines = currentKochLines;
