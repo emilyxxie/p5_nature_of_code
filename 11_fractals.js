@@ -16,7 +16,7 @@ function setup() {
   ///////////// now set up grid of triangles
 
   // here are the x-axis variables
-  var triangleCountX = 6;
+  var triangleCountX = 5;
   // set the size of the triangle
   var triangleWidth = width / triangleCountX;
 
