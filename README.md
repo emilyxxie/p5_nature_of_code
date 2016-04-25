@@ -12,3 +12,5 @@ Below are visuals of the results of these exercises.
 
 
 ![alt tag](gifs/11_koch_lines.gif)
+
+![alt tag](gifs/11_koch_snowflake.gif)
