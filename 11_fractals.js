@@ -3,6 +3,7 @@ var previousKochLines = [];
 var colors = [];
 var totalColors = 360;
 var colorIncrement = 20;
+var mouseClickedCounter = 0;
 
 function setup() {
   background(0);
@@ -134,6 +135,10 @@ function KochLine(start, end, color) {
 }
 
 function mouseClicked() {
+  mouseClickedCounter++;
+  if (mouseClickedCounter >= 6) {
+    return;
+  }
   previousKochLines = currentKochLines;
   currentKochLines = [];
   previousKochLines.forEach(function(kochGroup) {
