@@ -13,7 +13,7 @@ function setup() {
   colors = Array.apply(null, Array(totalColors)).map(function(_, num) {
     return color('hsl(' + num + ',100%, 60%)');
   });
-
+`
   ///////////// now set up grid of triangles
 
   // here are the x-axis variables
