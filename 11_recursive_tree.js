@@ -18,11 +18,11 @@ function draw() {
   // tree two
   // push();
 
-  push();
-  translate(width / 3, height);
-  drawBranch(height / 2);
+  // push();
+  // translate(width / 3, height);
+  // drawBranch(height / 2);
+  // // pop();
   // pop();
-  pop();
 }
 
 function createTree() {
@@ -32,19 +32,25 @@ function createTree() {
 
 function drawBranch(branchLength) {
   branchLength = branchLength * (2/3);
+
+  var strokeWidth = branchLength / 12;
+  strokeWeight(strokeWidth);
   line(0, 0, 0, -branchLength);
   translate(0, -branchLength);
 
   if (branchLength >= 2) {
-    push();
-    rotate(degreeRotate);
-    drawBranch(branchLength);
-    pop();
 
     push();
     rotate(-degreeRotate);
     drawBranch(branchLength);
     pop();
+
+
+    push();
+    rotate(degreeRotate);
+    drawBranch(branchLength);
+    pop();
+
   }
 }
 
