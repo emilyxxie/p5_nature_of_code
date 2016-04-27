@@ -5,19 +5,20 @@ var totalColors = 360;
 var colorIncrement = 20;
 var mouseClickedCounter = 0;
 
+
 function setup() {
   background(0);
   createCanvas(window.innerWidth, window.innerHeight);
   // set up array of colors to cache
   colors = Array.apply(null, Array(totalColors)).map(function(_, num) {
-    return color('hsl(' + num + ',80%, 60%)');
+    return color('hsl(' + num + ',100%, 60%)');
   });
 
   ///////////// now set up grid of triangles
 
   // here are the x-axis variables
   var triangleCountX = 5;
-  // set the size of the triangle
+  // set the size of the trianglese
   var triangleWidth = width / triangleCountX;
 
   // here are the y-axis variables
@@ -27,7 +28,7 @@ function setup() {
   triangleHeight = sqrt(triangleHeight);
   var triangleCountY = height / triangleHeight;
 
-  //
+  // the triangle grows, so get the height padding
   var hPadding = sin(radians(60)) * (triangleWidth / 3);
   for (var i = 0; i <= triangleCountX; i++) {
     for (var j = 0; j <= triangleCountY; j++) {
@@ -91,8 +92,8 @@ function KochLine(start, end, color) {
   this.third = p5.Vector.sub(this.end, this.start).div(3);
 
   this.display = function() {
-    stroke(colors[this.colorIndex % totalColors]);
-    strokeWeight(1);
+    stroke(colors[this.colorIndex % totalColors], 0);
+    strokeWeight(1, 0);
     line(this.start.x, this.start.y, this.end.x, this.end.y);
   }
 
