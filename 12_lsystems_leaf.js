@@ -1,7 +1,8 @@
 var lsys;
 var mover;
 var startString = ['F'];
-var rotation = 25;
+var rotation = 22.5;
+var generations = 4;
 
 function setup() {
   createCanvas(
@@ -11,13 +12,15 @@ function setup() {
   background(255);
   var rule = new Rule().plantA;
 
-  var turtle = new Turtle(height / 3, rotation);
+  var initialLength = height / 20;
+  var turtle = new Turtle(initialLength, rotation);
   turtle.initiate();
 
   lsys = new LSystem(startString, rule, turtle);
-  lsys.generate();
-  lsys.generate();
-  console.log(lsys.axiom);
+  // for (var i = 0; i <= generations; i++) {
+  //   lsys.generate();
+  // }
+  // console.log(lsys.axiom);
 }
 
 function draw() {
@@ -66,6 +69,8 @@ function LSystem(axiom, rule, turtle) {
         that.rule.a.forEach(function(charA) {
           nextString.push(charA);
         });
+      } else {
+        nextString.push(character);
       }
       // } else if (character == 'G') {
       //   that.rule.b.forEach(function(charB) {
@@ -83,11 +88,9 @@ function LSystem(axiom, rule, turtle) {
         case 'F':
           line(0, 0, 0, -that.turtle.length);
           translate(0, -that.turtle.length);
-          that.turtle.shrink();
           break;
         case 'G':
           translate(0, -that.turtle.length);
-          that.turtle.shrink();
           break;
         case '+':
           rotate(that.turtle.rotateRight);
@@ -104,6 +107,7 @@ function LSystem(axiom, rule, turtle) {
       }
     });
   }
+  this.turtle.shrink();
 }
 
 function Turtle(length, degreeRotation) {
@@ -113,13 +117,16 @@ function Turtle(length, degreeRotation) {
   this.x = 0;
   this.y = 0;
 
-
   this.initiate = function() {
     translate(width/2, height - 50);
   }
 
   this.shrink = function() {
-    this.length = this.length / 3;
+    this.length = this.length / 5;
   }
 
+}
+
+function mouseClicked() {
+  lsys.generate();
 }
