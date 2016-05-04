@@ -1,7 +1,10 @@
+// render 5 times, sleep for 5 seconds, clear
+// cycle through each plant
+
 var lsys;
+var plant;
 var turtle;
 var startString = ['F'];
-var rotation = 22.5;
 var clicks = 0;
 
 function setup() {
@@ -9,17 +12,11 @@ function setup() {
     window.innerWidth,
     window.innerHeight
   );
-  var rule = new Rule().plantA;
+  var plant = new Plant().plantA;
+  console.log(plant);
+  turtle = new Turtle(plant);
 
-  var initialLength = height / 4.5;
-  turtle = new Turtle(initialLength, rotation);
-  // turtle.initiate();
-
-  lsys = new LSystem(startString, rule, turtle);
-  // for (var i = 0; i <= generations; i++) {
-  //   lsys.generate();
-  // }
-  // console.log(lsys.axiom);
+  lsys = new LSystem(plant, turtle);
 }
 
 function draw() {
@@ -30,6 +27,7 @@ function draw() {
 }
 
 /*
+
 Rule contains all the rules for various plants
 Employs standard rule set:
     F: Draw a line and move forward
@@ -38,15 +36,42 @@ Employs standard rule set:
     -: Rotate left
    [: Save current location
    ]: Restore previous location
+Contains data for rotation
+Stipulates how much to shrink by each generation
+
 */
-function Rule() {
+function Plant() {
   this.plantA = {
-    a: [
-      'F', 'F', '+', '[', '+', 'F', '-', 'F', '-', 'F',
-      ']', '-', '[', '-', 'F', '+', 'F', '+', 'F', ']'
-    ]
+    axiom: 'F',
+    rules: {
+      F: 'FF-[-F+F+F]+[+F-F-F]'
+    },
+    rotation: 22.5,
+    sizeFactor: 0.5,
+    initialLength: height / 4.5
   }
 
+  // this.plantB = {
+  //   a: [
+  //     'F', 'F', '[', '+', 'F', ']', 'F', '[', '-', 'F', ']', '[', 'F', ']'
+  //   ]
+  //   startString = 'F',
+  //   rules: {
+  //     a: 'FF-[-F+F+F]+[+F-F-F]'
+  //   },
+  //   rotation: 22.5,
+  //   sizeFactor: 0.5,
+  //   initialLength: height / 4.5
+
+  // }
+
+  this.plantA = {
+    rules: {
+      a: 'FF-[-F+F+F]+[+F-F-F]'
+    },
+    rotation: 22.5,
+    sizeFactor: 0.5
+  }
 
   this.plantC = {
     a: ['F', 'F'],
@@ -56,36 +81,33 @@ function Rule() {
       ]
   }
 
-  this.plantB = {
-    a: ['F', 'F'],
-    b: [
-          'F', '-', '[', '[', 'G', ']', '+', 'G', ']',
-          '+', 'F', '[', '+', 'F', 'G', ']', '-', 'G'
-        ]
-  }
 }
 
-function LSystem(axiom, rule, turtle) {
-  this.axiom = axiom;
-  this.rule = rule;
+function LSystem(plant, turtle) {
+  this.axiom = plant.axiom;
+  this.rules = plant.rules;
   this.turtle = turtle;
 
   this.generate = function() {
     var nextString = [];
     var that = this;
     this.axiom.forEach(function(character) {
-      if (character == 'F') {
-        that.rule.a.forEach(function(charA) {
-          nextString.push(charA);
-        });
-      } else if (character == 'X') {
-          that.rule.b.forEach(function(charB) {
-            nextString.push(charB);
-        });
-      }
-      else {
-        nextString.push(character);
-      }
+      // dynamically generate rules here
+
+
+
+      // if (character == 'F') {
+      //   that.rule.a.forEach(function(charA) {
+      //     nextString.push(charA);
+      //   });
+      // } else if (character == 'X') {
+      //     that.rule.b.forEach(function(charB) {
+      //       nextString.push(charB);
+      //   });
+      // }
+      // else {
+      //   nextString.push(character);
+      // }
     });
     this.axiom = nextString;
   }
@@ -120,15 +142,14 @@ function LSystem(axiom, rule, turtle) {
   }
 }
 
-function Turtle(length, degreeRotation) {
-  this.length = length;
-  this.rotateRight = radians(degreeRotation);
-  this.rotateLeft = -radians(degreeRotation);
-  this.x = 0;
-  this.y = 0;
+function Turtle(plant) {
+  this.length = plant.initialLength;
+  this.rotateRight = radians(plant.rotation);
+  this.rotateLeft = -radians(plant.rotation);
+  this.sizeFactor = plant.sizeFactor;
 
   this.shrink = function() {
-    this.length = this.length / 2;
+    this.length = this.length * this.sizeFactor;
   }
 
 }
