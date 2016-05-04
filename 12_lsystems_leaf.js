@@ -2,7 +2,7 @@ var lsys;
 var turtle;
 var startString = ['F'];
 var rotation = 22.5;
-var generations = 4;
+var clicks = 0;
 
 function setup() {
   createCanvas(
@@ -23,8 +23,9 @@ function setup() {
 }
 
 function draw() {
-  background(255);
+  background(0);
   translate(width / 2, height - 100);
+  stroke(255, 50);
   lsys.render();
 }
 
@@ -133,6 +134,9 @@ function Turtle(length, degreeRotation) {
 }
 
 function mouseClicked() {
-  lsys.generate();
-  turtle.shrink();
+  if (clicks <= 4) {
+    lsys.generate();
+    turtle.shrink();
+  }
+  clicks++;
 }
