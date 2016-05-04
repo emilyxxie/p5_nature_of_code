@@ -1,5 +1,5 @@
 var lsys;
-var mover;
+var turtle;
 var startString = ['F'];
 var rotation = 22.5;
 var generations = 4;
@@ -9,12 +9,11 @@ function setup() {
     window.innerWidth,
     window.innerHeight
   );
-  background(255);
   var rule = new Rule().plantA;
 
-  var initialLength = height / 20;
-  var turtle = new Turtle(initialLength, rotation);
-  turtle.initiate();
+  var initialLength = height / 4.5;
+  turtle = new Turtle(initialLength, rotation);
+  // turtle.initiate();
 
   lsys = new LSystem(startString, rule, turtle);
   // for (var i = 0; i <= generations; i++) {
@@ -24,6 +23,8 @@ function setup() {
 }
 
 function draw() {
+  background(255);
+  translate(width / 2, height - 100);
   lsys.render();
 }
 
@@ -42,8 +43,16 @@ function Rule() {
     a: [
       'F', 'F', '+', '[', '+', 'F', '-', 'F', '-', 'F',
       ']', '-', '[', '-', 'F', '+', 'F', '+', 'F', ']'
-    ],
-    angle: 22.5,
+    ]
+  }
+
+
+  this.plantC = {
+    a: ['F', 'F'],
+    b: [
+      '[', 'F', '-', '[', '[', 'X', ']', '+', 'X', ']',
+      '+', 'F', '[', '+', 'F', 'X', ']', '-', 'X'
+      ]
   }
 
   this.plantB = {
@@ -51,8 +60,7 @@ function Rule() {
     b: [
           'F', '-', '[', '[', 'G', ']', '+', 'G', ']',
           '+', 'F', '[', '+', 'F', 'G', ']', '-', 'G'
-        ],
-    angle: 22.5,
+        ]
   }
 }
 
@@ -69,14 +77,14 @@ function LSystem(axiom, rule, turtle) {
         that.rule.a.forEach(function(charA) {
           nextString.push(charA);
         });
-      } else {
+      } else if (character == 'X') {
+          that.rule.b.forEach(function(charB) {
+            nextString.push(charB);
+        });
+      }
+      else {
         nextString.push(character);
       }
-      // } else if (character == 'G') {
-      //   that.rule.b.forEach(function(charB) {
-      //     nextString.push(charB);
-      //   });
-      // }
     });
     this.axiom = nextString;
   }
@@ -104,10 +112,11 @@ function LSystem(axiom, rule, turtle) {
         case ']':
           pop();
           break;
+        default:
+          break;
       }
     });
   }
-  this.turtle.shrink();
 }
 
 function Turtle(length, degreeRotation) {
@@ -117,16 +126,13 @@ function Turtle(length, degreeRotation) {
   this.x = 0;
   this.y = 0;
 
-  this.initiate = function() {
-    translate(width/2, height - 50);
-  }
-
   this.shrink = function() {
-    this.length = this.length / 5;
+    this.length = this.length / 2;
   }
 
 }
 
 function mouseClicked() {
   lsys.generate();
+  turtle.shrink();
 }
