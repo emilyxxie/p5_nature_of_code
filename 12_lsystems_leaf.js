@@ -1,5 +1,7 @@
 var lsys;
 var mover;
+var startString = ['F'];
+var rotation = 25;
 
 function setup() {
   createCanvas(
@@ -7,21 +9,18 @@ function setup() {
     window.innerHeight
   );
   background(255);
-
-  var startString = ['F'];
   var rule = new Rule().plantA;
 
-  var turtle = new Turtle(height / 3);
+  var turtle = new Turtle(height / 3, rotation);
   turtle.initiate();
 
   lsys = new LSystem(startString, rule, turtle);
   lsys.generate();
   lsys.generate();
-  noLoop();
+  console.log(lsys.axiom);
 }
 
 function draw() {
-  console.log(lsys.axiom);
   lsys.render();
 }
 
@@ -30,7 +29,7 @@ Rule contains all the rules for various plants
 Employs standard rule set:
     F: Draw a line and move forward
     G: Move forward (without drawing a line)
-    +: Rotate right
+    +: 14 right
     -: Rotate left
    [: Save current location
    ]: Restore previous location
@@ -82,19 +81,15 @@ function LSystem(axiom, rule, turtle) {
     this.axiom.forEach(function(character) {
       switch(character) {
         case 'F':
-          console.log(that.turtle.length);
-          line(0, 0, -that.turtle.length, 0);
-          // var segmentLength = -that.length;
-          // line(0, 0, 0, -that.length);
-          translate(-that.length, 0);
-          // that.turtle.shrink();
+          line(0, 0, 0, -that.turtle.length);
+          translate(0, -that.turtle.length);
+          that.turtle.shrink();
           break;
         case 'G':
           translate(0, -that.turtle.length);
           that.turtle.shrink();
           break;
         case '+':
-          console.log("HERE I AM");
           rotate(that.turtle.rotateRight);
           break;
         case '-':
@@ -120,7 +115,7 @@ function Turtle(length, degreeRotation) {
 
 
   this.initiate = function() {
-    translate(width/2, height - 100);
+    translate(width/2, height - 50);
   }
 
   this.shrink = function() {
