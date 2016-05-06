@@ -105,5 +105,4 @@ function windowResized() {
   );
   background(0);
   redraw();
-  // mouseClicked();
 }

@@ -10,12 +10,13 @@ function setup() {
     window.innerWidth,
     window.innerHeight
   );
-  plant = new Plant().plantH;
+  plant = new Plant().plantG;
   turtle = new Turtle(plant);
   lsys = new LSystem(plant, turtle);
 }
 
 function draw() {
+  push();
   background(0);
   translate(
     width / 2,
@@ -23,6 +24,7 @@ function draw() {
   );
   stroke(255, 50);
   lsys.render();
+  pop();
 }
 
 /*
@@ -38,6 +40,7 @@ Contains data for rotation
 Stipulates how much to shrink by each generation
 */
 function Plant() {
+
   // bush
   this.plantA = {
     axiom: 'F',
@@ -50,6 +53,7 @@ function Plant() {
     maxClicks: 4
   };
 
+  // kelpy
   this.plantB = {
     axiom: 'F',
     rules: {
@@ -61,6 +65,7 @@ function Plant() {
     maxClicks: 5
   };
 
+  // feathery
   this.plantC = {
     axiom: 'X',
     rules: {
@@ -73,6 +78,7 @@ function Plant() {
     maxClicks: 6
   }
 
+  // spade
   this.plantD = {
     axiom: 'X',
     rules: {
@@ -85,6 +91,7 @@ function Plant() {
     maxClicks: 8
   };
 
+  // plain hay
   this.plantE = {
     axiom: 'X',
     rules: {
@@ -110,21 +117,8 @@ function Plant() {
     maxClicks: 6
   };
 
-  // the cookie monster
-  this.plantG = {
-    axiom: 'X',
-    rules: {
-      X: '-[++[]+F[X]+X]+F[+FX]-X',
-      F: 'FF'
-    },
-    rotation: 22.5,
-    lengthFactor: 0.5,
-    initialLength: height / 2,
-    maxClicks: 8
-  };
-
   // spiral fan
-  this.plantH = {
+  this.plantG = {
     axiom: 'X',
     rules: {
       X: '-[++[]+[X]+X]+F[+FX]-X',
@@ -132,8 +126,8 @@ function Plant() {
     },
     rotation: 20,
     lengthFactor: 0.5,
-    initialLength: height / 2.5,
-    maxClicks: 7
+    initialLength: height / 3,
+    maxClicks: 6
   }
 
 
@@ -212,4 +206,13 @@ function mouseClicked() {
     turtle.shrink();
   }
   clicks++;
+}
+
+function windowResized() {
+  resizeCanvas(
+    window.innerWidth,
+    window.innerHeight
+  );
+  background(0);
+  redraw();
 }
